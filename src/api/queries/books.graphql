@@ -1,0 +1,12 @@
+query getBooks {
+  books {
+    edges {
+      node {
+        id
+        title
+        author
+        category
+      }
+    }
+  }
+}
