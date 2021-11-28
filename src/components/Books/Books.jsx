@@ -1,51 +1,28 @@
-import React, { Component } from "react";
-import gql from "graphql-tag";
-import { graphql, Query } from "react-apollo";
+import React, { useEffect } from "react";
 import s from "./Books.module.css";
-//import getBooks from "../../api/queries/books.graphql";
+import Preloader from "./../common/preloader/Preloader";
+import AddBook from "./AddBook/AddBook";
 
-class Books extends Component {
-  render() {
-    console.log(this.props);
+let Books = (props) => {
+  useEffect(() => props.getBooks(), []);
 
-    return (
+  return (
+    <div>
       <div className={s.container}>
-        {this.props.data.loading === true
-          ? "Loading"
-          : this.props.data.books.edges.map((data) => (
-              <div className={s.category}>
-                <p>Категория</p>
-                {data.node.category}
-                <div className={s.author}>
-                  <p>Автор</p>
-                  {data.node.author}
-                  <div className={s.title}>
-                    <p>Произведение</p>
-                    {data.node.title}
-                  </div>
-                </div>
-              </div>
-            ))}
+        {!props.books ? (
+          <Preloader />
+        ) : (
+          props.books.map((data) => (
+            <div className={s.title} key={data.id}>
+              <p>Произведение</p>
+              {data.title}
+            </div>
+          ))
+        )}
       </div>
-    );
-  }
-}
+      <div className={s.container}>{<AddBook addBook={props.addBook} />}</div>
+    </div>
+  );
+};
 
-const booksQuery = gql`
-  query getBooks {
-    books {
-      edges {
-        node {
-          id
-          title
-          author
-          category
-        }
-      }
-    }
-  }
-`;
-
-const books = graphql(booksQuery)(Books);
-
-export default books;
+export default Books;

@@ -3,10 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ApolloProvider } from "react-apollo";
-import { ApolloClient } from "apollo-client";
+import { ApolloProvider } from "@apollo/client";
+import { ApolloClient } from "@apollo/client";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import { Provider } from "react-redux";
+import store from "./store";
+import { BrowserRouter } from "react-router-dom";
 
 const httpLink = {
   uri: "http://127.0.0.1:20000/graphql/",
@@ -22,9 +25,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById("root")
 );

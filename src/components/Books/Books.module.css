@@ -1,27 +1,8 @@
 .container {
+  background-color: #cce0e0;
   width: 50%;
   margin: auto;
-  border: 1px dashed;
-  border-radius: 5px;
-  box-shadow: 0px 0px 11px black;
-}
-
-.container p {
-}
-
-.category p {
-  color: brown;
-  text-align: left;
-  font-weight: 600;
-  font-size: x-large;
-}
-
-.author p {
-  color: blueviolet;
-  font-weight: 400;
-  font: 1em sans-serif;
-}
-
-.title p {
-  color: burlywood;
+  border-radius: 10px;
+  box-shadow: 0px 0px 9px -5px black;
+  margin-bottom: 20px;
 }

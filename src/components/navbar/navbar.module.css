@@ -1,0 +1,23 @@
+.nav {
+  background-color: cadetblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 1em;
+  box-shadow: 0px 0px 10px -5px black;
+}
+
+.item {
+  padding: 0.5em;
+  font-weight: bold;
+}
+
+.item a {
+  text-decoration: none;
+  color: darkslategray;
+}
+
+.item a:hover {
+  color: beige;
+}

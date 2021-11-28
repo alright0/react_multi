@@ -1,12 +1,17 @@
 import "./App.css";
-import Books from "./components/Books/Books";
-import Clock from "./components/Clock/Clock";
+import { Route, Routes } from "react-router-dom";
+import BooksContainer from "./containers/Books/booksContainer";
+import HookLearn from "./components/HookLearn/HookLearn";
+import Navbar from "./components/navbar/navbar";
 
 function App() {
   return (
     <div className="App">
-      <Clock />
-      <Books />
+      <Navbar />
+      <Routes>
+        <Route path="/hooks" element={<HookLearn />} />
+        <Route path="/books" element={<BooksContainer />} />
+      </Routes>
     </div>
   );
 }
