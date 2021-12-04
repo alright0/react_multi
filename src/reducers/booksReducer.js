@@ -28,8 +28,15 @@ export const getBooks = () => (dispatch) => {
   });
 };
 
-export const addBook = (data) => (dispatch) => {
+export const addBook = (category, author, title) => (dispatch) => {
+  let data = { category, author, title };
   bookApi.addBook(data).then(() => {
+    dispatch(getBooks());
+  });
+};
+
+export const deleteBook = (id) => (dispatch) => {
+  bookApi.deleteBook(id).then(() => {
     dispatch(getBooks());
   });
 };

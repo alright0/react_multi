@@ -1,6 +1,6 @@
 import Books from "../../components/Books/Books";
 import { connect } from "react-redux";
-import { addBook, getBooks } from "./../../reducers/booksReducer";
+import { addBook, getBooks, deleteBook } from "./../../reducers/booksReducer";
 
 let mapStateToProps = (state) => {
   return {
@@ -8,4 +8,4 @@ let mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getBooks, addBook })(Books);
+export default connect(mapStateToProps, { getBooks, addBook, deleteBook })(Books);

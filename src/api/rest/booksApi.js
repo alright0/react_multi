@@ -21,4 +21,10 @@ export const bookApi = {
       return response.data;
     });
   },
+  deleteBook(id) {
+    let data = { id };
+    return instanse.delete("api/book/", { data }).then((response) => {
+      return response.data;
+    });
+  },
 };
