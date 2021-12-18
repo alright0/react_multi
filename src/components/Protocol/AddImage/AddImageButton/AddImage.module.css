@@ -1,0 +1,22 @@
+.addFile {
+  border: 3px dashed grey;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  opacity: 50%;
+  font-weight: 600;
+  font-size: x-large;
+  color: dimgray;
+}
+
+.addFile:hover {
+  opacity: 100%;
+}
+
+.addFile input {
+  display: none;
+}

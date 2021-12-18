@@ -4,24 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/client";
-import { ApolloClient } from "@apollo/client";
-import { HttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
 import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter } from "react-router-dom";
-
-const httpLink = {
-  uri: "http://127.0.0.1:20000/graphql/",
-  headers: {
-    authorization: `Basic YWRtaW46YWRtaW4=`,
-  },
-};
-
-const client = new ApolloClient({
-  link: new HttpLink(httpLink),
-  cache: new InMemoryCache(),
-});
+import { client } from "./api/client";
 
 ReactDOM.render(
   <ApolloProvider client={client}>

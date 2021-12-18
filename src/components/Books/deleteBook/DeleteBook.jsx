@@ -1,11 +1,18 @@
 import React from "react";
-import s from "./../AddBook/addBook.module.css";
+import s from "./../Books.module.css";
 import { Field, reduxForm } from "redux-form";
+import { deleteBookQuery, getBooksQuery } from "../../../api/queries/bookQueries";
+import { useMutation } from "@apollo/client";
 
 let DeleteBook = (props) => {
+  const [deleteBook, { data, loading, error }] = useMutation(deleteBookQuery);
+
   let getFormData = (values) => {
     if (values.bookId) {
-      props.deleteBook(values.bookId);
+      deleteBook({
+        variables: { id: values.bookId },
+        refetchQueries: [{ query: getBooksQuery }],
+      });
       props.closeModal();
     }
   };
@@ -28,8 +35,8 @@ let DeleteBook = (props) => {
 const DeleteForm = (props) => {
   let booksList = props.books.map((book) => {
     return (
-      <option value={book.id} key={book.id}>
-        {book.author} - {book.title}
+      <option value={book.node.id} key={book.node.id}>
+        {book.node.author} - {book.node.title}
       </option>
     );
   });

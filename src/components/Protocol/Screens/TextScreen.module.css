@@ -1,0 +1,8 @@
+.textScreen {
+  display: grid;
+  margin: auto auto 25px;
+}
+
+.buttonBlock {
+  display: flex;
+}

@@ -1,11 +1,29 @@
 import React from "react";
-import s from "./../AddBook/addBook.module.css";
+import s from "./../Books.module.css";
 import { Field, reduxForm } from "redux-form";
+import { useMutation } from "@apollo/client";
+import { addBookQuery, getBooksQuery } from "../../../api/queries/bookQueries";
+import { required } from "../../../utils/reduxFormValidate";
+import { customInput } from "../../../utils/reduxFormFields";
 
 let AddBook = (props) => {
+  const [addNewBook, { loading, error }] = useMutation(addBookQuery, {
+    refetchQueries: [{ query: getBooksQuery }],
+    onError(err) {
+      return <span>{err.message}</span>;
+    },
+    onCompleted() {
+      props.closeModal(true);
+    },
+  });
+
   let getFormData = (values) => {
-    props.addBook(values.category, values.author, values.title);
-    props.closeModal();
+    addNewBook({
+      variables: { category: values.category, author: values.author, title: values.title },
+    });
+    /* {
+      !error && props.closeModal(true);
+    } */
   };
 
   return (
@@ -13,6 +31,7 @@ let AddBook = (props) => {
       {props.isOpen && (
         <div className={s.modal}>
           <div className={s.modalBody}>
+            {error && <span className={s.error}>{error.message}</span>}
             <AddNewBookForm onSubmit={getFormData} />
             <button onClick={props.closeModal}>Закрыть</button>
           </div>
@@ -26,15 +45,21 @@ const AddBookForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
-        <Field component="input" name="author" placeholder="Автор" />
-        <Field component="input" name="title" placeholder="Название" />
-        <Field component="input" name="category" placeholder="Категория" />
+        <div>
+          <Field component={customInput} name="author" validate={[required]} placeholder="Автор" />
+        </div>
+        <div>
+          <Field component="input" name="title" /* validate={[required]} */ placeholder="Название" />
+        </div>
+        <div>
+          <Field component={customInput} name="category" validate={[required]} placeholder="Категория" />
+        </div>
         <button>Добавить книгу</button>
       </div>
     </form>
   );
 };
 
-const AddNewBookForm = reduxForm({ form: "addNewBook" })(AddBookForm);
+const AddNewBookForm = reduxForm({ form: "addBookForm" })(AddBookForm);
 
 export default AddBook;

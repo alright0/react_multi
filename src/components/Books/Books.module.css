@@ -7,6 +7,10 @@
   margin-bottom: 20px;
 }
 
+.error {
+  color: red;
+}
+
 .category {
   background-color: #bfd6d6;
   width: 95%;
@@ -20,6 +24,30 @@
   background-color: #adc4c4;
   width: 95%;
   margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 9px -5px black;
+  margin-bottom: 20px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+.modalBody {
+  padding: 2rem;
+  width: 400px;
+  border-radius: 5px;
+  background: #fff;
+  height: 200px;
+  background-color: #cce0e0;
   border-radius: 10px;
   box-shadow: 0px 0px 9px -5px black;
   margin-bottom: 20px;

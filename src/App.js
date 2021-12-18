@@ -1,16 +1,19 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import BooksContainer from "./containers/Books/booksContainer";
-import HookLearn from "./components/HookLearn/HookLearn";
-import Navbar from "./components/navbar/navbar";
+import Navbar from "./components/Navbar/Navbar";
+import Protocol from "./components/Protocol/Protocol";
+import Books from "./components/Books/Books";
+import ProtocolList from "./components/ProtocolList/ProtocolList";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/hooks" element={<HookLearn />} />
-        <Route path="/books" element={<BooksContainer />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/protocol/new" element={<Protocol />} />
+        <Route path="/protocol/edit/:protocolId" element={<Protocol />} />
+        <Route path="/protocollist" element={<ProtocolList />} />
       </Routes>
     </div>
   );
