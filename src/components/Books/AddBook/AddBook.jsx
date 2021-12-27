@@ -21,9 +21,7 @@ let AddBook = (props) => {
     addNewBook({
       variables: { category: values.category, author: values.author, title: values.title },
     });
-    /* {
-      !error && props.closeModal(true);
-    } */
+
   };
 
   return (
