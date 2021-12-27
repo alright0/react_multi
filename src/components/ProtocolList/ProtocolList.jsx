@@ -1,7 +1,7 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
-import { addProtocols } from "../../api/queries/protocolQueries";
-import Preloader from "../common/preloader/Preloader";
+import { addProtocols, addProtocol } from "../../api/queries/protocolQueries";
+import Preloader from "../common/Preloader/Preloader";
 import s from "./ProtocolList.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -9,10 +9,18 @@ let ProtocolList = (props) => {
   const { data, loading, error } = useQuery(addProtocols);
   const protocols = data ? data.protocols.edges : null;
   const navigate = useNavigate();
+  const [addNewProtocol, {err}] = useMutation(addProtocol, {
+    onError(err) {
+      return <span>{err.message}</span>;
+    },
+    refetchQueries:[{query: addProtocols}]
+  },
+  )
 
-  let addNewProtocol = (props) => {
-    navigate("../protocol/new");
-  };
+  let createNewProtocol = () => {
+    addNewProtocol({variables:{title: "Новый протокол", type: "TypeOne"}})
+  }
+
 
   return (
     <div className={s.protocolContainer}>
@@ -20,7 +28,7 @@ let ProtocolList = (props) => {
       {loading && <Preloader />}
       {!loading && !error && (
         <>
-          <button onClick={addNewProtocol}>создать протокол</button>
+          <button onClick={createNewProtocol}>создать протокол</button>
           <table>
             {protocols.map((protocol) => (
               <tr key={protocol.node.id}>

@@ -11,7 +11,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/books" element={<Books />} />
-        <Route path="/protocol/new" element={<Protocol />} />
         <Route path="/protocol/edit/:protocolId" element={<Protocol />} />
         <Route path="/protocollist" element={<ProtocolList />} />
       </Routes>

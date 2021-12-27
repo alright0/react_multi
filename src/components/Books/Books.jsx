@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import s from "./Books.module.css";
-import Preloader from "./../common/preloader/Preloader";
+import Preloader from "../common/Preloader/Preloader";
 import AddBook from "./AddBook/AddBook";
 import DeleteBook from "./DeleteBook/DeleteBook";
 import { getBooksQuery } from "../../api/queries/bookQueries";

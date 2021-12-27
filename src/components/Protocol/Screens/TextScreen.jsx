@@ -1,18 +1,47 @@
 import React from "react";
+import { useState } from "react";
 import s from "./TextScreen.module.css";
+import { useQuery, useMutation } from "@apollo/client";
+import { getProtocol, deleteScreen, updateScreen } from "../../../api/queries/protocolQueries";
+
 
 const TextScreen = (props) => {
+  const [redactTitle, setRedactTitle] = useState('Редактировать')
+  const [isDisabled, setIsDisabled] = useState(true)
+  //const [updateThisScreen, {e,l}] = useMutation(updateScreen, {    onError(err) {
+  //  return <span>{err.message}</span>;
+  //},})
+  const [deleteThisScreen, { loading, error }] = useMutation(deleteScreen, {
+    refetchQueries: [{ query: getProtocol, variables: { id: props.parent } }],
+    onError(err) {
+      return <span>{err.message}</span>;
+    },
+  })
+
+  let delScreen = (id) => {
+
+    console.log(id)
+    deleteThisScreen({variables:{
+      id: props.id
+    }})}
+
+    let redact = () => {
+      setIsDisabled(!isDisabled)
+      setRedactTitle(isDisabled ? 'Закончить редактирование': 'Редактировать')
+      //isDisabled ? {updateThisScreen({variables:})}
+    }
+
+
   return (
     <div className={s.textScreen}>
-      <input type="text" placeholder="Название" value={props.title} />
-      <textarea type="text" placeholder="Добавьте Комментарий..." />
+      <label >id: {props.title}</label>
+      <input type="text" placeholder="Название" disabled={isDisabled}/>
+      <textarea type="text" placeholder="Добавьте Комментарий..." rows={5} disabled={isDisabled}/>
       <div className={s.buttonBlock}>
-        <button>Сохранить</button>
-        <button>Редактировать</button>
+        <button onClick={redact}>{redactTitle}</button>
         <button
-          onClick={() => {
-            props.deleteScreen(props.item.node.key);
-          }}
+          onClick={() => {delScreen(props.id)}}
+          
         >
           Удалить
         </button>

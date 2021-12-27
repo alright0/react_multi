@@ -1,8 +1,17 @@
 .textScreen {
+  margin: auto;
   display: grid;
   margin: auto auto 25px;
+  justify-items: center;
 }
 
 .buttonBlock {
   display: flex;
 }
+
+.textScreen textarea, input{
+  resize: vertical;
+  border-radius: 5px;
+  width: 80%;
+}
+

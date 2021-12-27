@@ -4,36 +4,25 @@ import AddImage from "./AddImage/AddImageButton/AddImage";
 import AddScreen from "./AddScreen/AddScreen";
 import s from "./Protocol.module.css";
 import TextScreen from "./Screens/TextScreen";
-import uniqid from "uniqid";
-import { getProtocol } from "../../api/queries/protocolQueries";
-import Preloader from "../common/preloader/Preloader";
-import { Cache, useQuery } from "@apollo/client";
+import { getProtocol, addScreen, addProtocol } from "../../api/queries/protocolQueries";
+import Preloader from "../common/Preloader/Preloader";
+import { useQuery, useMutation } from "@apollo/client";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
+
 
 let Protocol = (props) => {
   const Screens = {
     TextScreen: TextScreen,
   };
 
-  const { data, loading, error } = useQuery(getProtocol, { variables: { id: "UHJvdG9jb2xOb2RlOjI=" } });
+  const {protocolId} = useParams()
+
+  const { data, loading, error } = useQuery(getProtocol, { variables: { id: protocolId } });
   const protocolData = data ? data.protocol : null;
   const screens = data ? data.protocol.screenSet.edges : null;
-  const [components, setComponents] = useState([]);
 
-  let addScreenForm = () => {
-    let key = Date.now();
-    const [addScreen] = useMutation();
-    //setComponents([...screens, { node: { key: key, type: "TextScreen" } }]);
-  };
-
-  let deleteScreen = (id) => {
-    console.log(id);
-    console.log(components);
-
-    setComponents([...screens.filter((elem) => elem.node.key !== id)]);
-  };
-
-  //debugger;
 
   return (
     <div>
@@ -48,11 +37,18 @@ let Protocol = (props) => {
             screens.map((item) => {
               let ComponentType = Screens[item.node.type];
               return (
-                <ComponentType key={item.node.key} item={item} deleteScreen={deleteScreen} title={item.node.key} />
+                <ComponentType 
+                  key={item.node.key} 
+                  item={item} 
+                  id={item.node.id} 
+                  title={item.node.key}
+                  parent={protocolId}
+                  />
               );
             })}
           <div className={s.buttonField}>
-            <AddImage /> <AddScreen addScreenForm={addScreenForm} />
+            <AddImage /> 
+            <AddScreen parent={protocolId} />
           </div>
         </div>
       )}

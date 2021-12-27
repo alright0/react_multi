@@ -16,7 +16,6 @@ const Navbar = () => {
   return (
     <div className={s.nav}>
       <NavbarComponent link="/books" title="Books" />
-      <NavbarComponent link="/protocol/new" title="Add New Protocol" />
       <NavbarComponent link="/protocollist" title="Protocol List" />
       <NavbarComponent link="/" title="Home" />
     </div>
