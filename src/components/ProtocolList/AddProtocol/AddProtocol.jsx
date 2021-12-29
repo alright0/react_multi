@@ -3,10 +3,11 @@ import { Field, reduxForm } from "redux-form";
 import { useMutation } from "@apollo/client";
 import { addProtocol, addProtocols } from "./../../../api/queries/protocolQueries";
 import { required } from "../../../utils/reduxFormValidate";
-import s from "./../ProtocolList.module.css";
+import { Modal } from "antd";
+import { customInput } from "../../../utils/reduxFormFields";
 
 let AddProtocolModal = (props) => {
-  const [addNewProtocol, { err }] = useMutation(addProtocol, {
+  const [addNewProtocol, { error, warning }] = useMutation(addProtocol, {
     onError(err) {
       return <span>{err.message}</span>;
     },
@@ -20,35 +21,25 @@ let AddProtocolModal = (props) => {
     addNewProtocol({ variables: { title: values.title, type: values.type } });
   };
 
-  return (
-    <React.Fragment>
-      {props.isOpen && (
-        <div className={s.modal}>
-          <div className={s.modalBody}>
-            <AddNewProtocolForm onSubmit={createNewProtocol} />
-            <button onClick={props.closeModal}>Закрыть</button>
-          </div>
-        </div>
-      )}
-    </React.Fragment>
-  );
+  return <AddNewProtocolForm onSubmit={createNewProtocol} isOpen={props.isOpen} closeModal={props.closeModal} />;
 };
 
 const AddProtocolForm = (props) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <Modal
+      visible={props.isOpen}
+      onCancel={props.closeModal}
+      onOk={props.handleSubmit}
+      destroyOnClose={true}
+      title="Новый Протокол"
+    >
       <div>
-        <div>
-          <Field component="input" name="title" placeholder="Название" />
-        </div>
-        <div>
-          <Field component="input" name="type" placeholder="Тип" />
-        </div>
-        <div>
-          <button>Добавить протокол</button>
-        </div>
+        <Field component={customInput} name="title" validate={[required]} placeholder="Название" />
       </div>
-    </form>
+      <div>
+        <Field component={customInput} name="type" validate={[required]} placeholder="Тип" />
+      </div>
+    </Modal>
   );
 };
 

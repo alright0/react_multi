@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter } from "react-router-dom";
 import { client } from "./api/client";
+import "antd/dist/antd.css";
 
 ReactDOM.render(
   <ApolloProvider client={client}>

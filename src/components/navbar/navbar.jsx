@@ -1,24 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import s from "./Navbar.module.css";
-
-const NavbarComponent = ({ link, title }) => {
-  return (
-    <div className={s.item}>
-      <NavLink end to={link}>
-        {title}
-      </NavLink>
-    </div>
-  );
-};
+import { Link } from "react-router-dom";
+import { Menu } from "antd";
+import { ProfileOutlined, BookOutlined } from "@ant-design/icons";
 
 const Navbar = () => {
+  const style_centered = { display: "flex", justifyContent: "center" };
+
   return (
-    <div className={s.nav}>
-      <NavbarComponent link="/books" title="Books" />
-      <NavbarComponent link="/protocollist" title="Protocol List" />
-      <NavbarComponent link="/" title="Home" />
-    </div>
+    <Menu style={style_centered} mode="horizontal">
+      <Menu.Item icon={<BookOutlined />}>
+        <Link to="/books">Books</Link>
+      </Menu.Item>
+      <Menu.Item icon={<ProfileOutlined />}>
+        <Link to="/protocollist">Protocol List</Link>
+      </Menu.Item>
+    </Menu>
   );
 };
 

@@ -3,6 +3,11 @@
   grid-template-columns: 50% 50%;
 }
 
+.protocolDescription {
+  display: block;
+  text-align: left;
+}
+
 @media screen and (max-width: 900px) {
   .buttonField {
     display: block;

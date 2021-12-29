@@ -62,6 +62,19 @@ export const addProtocol = gql`
   }
 `;
 
+export const deleteProtocol = gql`
+  mutation deleteProtocol($id: ID!) {
+    deleteProtocol(id: $id) {
+      protocol {
+        id
+        type
+        title
+        created
+      }
+    }
+  }
+`;
+
 export const addScreen = gql`
   mutation addScreen($title: String!, $type: String!, $description: String!, $parent: String!, $key: Float!) {
     createScreen(title: $title, type: $type, description: $description, parent: $parent, key: $key) {

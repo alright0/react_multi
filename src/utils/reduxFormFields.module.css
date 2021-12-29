@@ -5,3 +5,7 @@
 .warning {
   color: orange;
 }
+
+.errorDiv {
+  height: 30px;
+}
