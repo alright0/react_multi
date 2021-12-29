@@ -1,27 +1,25 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
-import { addProtocols, deleteProtocol } from "../../api/queries/protocolQueries";
+import { addProtocols } from "../../api/queries/protocolQueries";
 import Preloader from "../common/Preloader/Preloader";
-import AddProtocolModal from "./AddProtocol/AddProtocol";
+import AddProtocolModal from "./AddProtocol";
 import { Table, Tag, Button, Space } from "antd";
 import { Link } from "react-router-dom";
-import { FileOutlined } from "@ant-design/icons";
+import { FileOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import UpdateProtocolModal from "./UpdateProtocol";
+import DeleteProtocolModal from "./DeleteProtocol";
 
 let ProtocolList = (props) => {
-  let buttonStyle = { width: "100%", margin: "5px 0 5px 0" };
+  const buttonStyle = { width: "100%", margin: "5px 0 5px 0" };
+  const tableStyle = { width: "100%", overflowX: "auto" };
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState({ isOpen: false });
+  const [updateModalIsOpen, setUpdateModalIsOpen] = useState({ isOpen: false });
+
   const { data, loading, error } = useQuery(addProtocols);
 
-  const [delProtocol, { err, load }] = useMutation(deleteProtocol, {
-    refetchQueries: [{ query: addProtocols }],
-  });
-
   const protocols = data ? data.protocols.edges : null;
-
-  let deleteThisProtocol = (e, protocolId) => {
-    delProtocol({ variables: { id: protocolId } });
-  };
 
   let columns = [
     {
@@ -50,10 +48,19 @@ let ProtocolList = (props) => {
       render: (title, record) => {
         return (
           <Space>
-            <Button type="primary" onClick={(e) => console.log("edit protocol")}>
+            <Button
+              icon={<EditOutlined />}
+              type="primary"
+              onClick={() => setUpdateModalIsOpen({ isOpen: true, id: record.key })}
+            >
               Изменить
             </Button>
-            <Button type="primary" danger onClick={(e) => deleteThisProtocol(e, record.key)}>
+            <Button
+              icon={<DeleteOutlined />}
+              type="primary"
+              danger
+              onClick={() => setDeleteModalIsOpen({ isOpen: true, id: record.key })}
+            >
               Удалить
             </Button>
           </Space>
@@ -86,16 +93,39 @@ let ProtocolList = (props) => {
       {loading && <Preloader />}
       {!loading && !error && (
         <>
-          <Button type="primary" icon={<FileOutlined />} style={buttonStyle} onClick={() => setModalIsOpen(true)}>
+          <Button type="primary" icon={<FileOutlined />} style={buttonStyle} onClick={() => setAddModalIsOpen(true)}>
             Создать Новый Протокол
           </Button>
 
-          <Table tableLayout="auto" columns={columns} dataSource={dataSource} onChange={onChange} />
+          <Table
+            style={tableStyle}
+            tableLayout="auto"
+            columns={columns}
+            dataSource={dataSource}
+            onChange={onChange}
+            pagination={{ position: ["bottom", "left"] }}
+          />
 
           <AddProtocolModal
-            isOpen={modalIsOpen}
+            isOpen={addModalIsOpen}
             closeModal={() => {
-              setModalIsOpen(false);
+              setAddModalIsOpen(false);
+            }}
+          />
+
+          <DeleteProtocolModal
+            isOpen={deleteModalIsOpen.isOpen}
+            id={deleteModalIsOpen.id}
+            closeModal={() => {
+              setDeleteModalIsOpen(false);
+            }}
+          />
+
+          <UpdateProtocolModal
+            isOpen={updateModalIsOpen.isOpen}
+            id={updateModalIsOpen.id}
+            closeModal={() => {
+              setUpdateModalIsOpen(false);
             }}
           />
         </>

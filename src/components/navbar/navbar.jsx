@@ -4,7 +4,7 @@ import { Menu } from "antd";
 import { ProfileOutlined, BookOutlined } from "@ant-design/icons";
 
 const Navbar = () => {
-  const style_centered = { display: "flex", justifyContent: "center" };
+  const style_centered = { display: "flex", width: "100%", justifyContent: "center", position: "sticky" };
 
   return (
     <Menu style={style_centered} mode="horizontal">

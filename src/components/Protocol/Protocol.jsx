@@ -10,8 +10,11 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { Tabs } from "antd";
 
 let Protocol = (props) => {
+  const { TabPane } = Tabs;
+
   const Screens = {
     TextScreen: TextScreen,
   };
@@ -47,29 +50,35 @@ let Protocol = (props) => {
               <b>Создан:</b> {new Date(protocolData.created).toLocaleString()}
             </div>
           </div>
-          {screens &&
-            screens.map((item) => {
-              let ComponentType = Screens[item.node.type];
-              return (
-                <ComponentType
-                  key={item.node.key}
-                  item={item}
-                  id={item.node.id}
-                  title={item.node.key}
-                  parent={protocolId}
-                />
-              );
-            })}
+          <Tabs type="card">
+            <TabPane tab="Планирование" key="1"></TabPane>
+            <TabPane tab="Производство" key="2">
+              {screens &&
+                screens.map((item) => {
+                  let ComponentType = Screens[item.node.type];
+                  return (
+                    <ComponentType
+                      key={item.node.key}
+                      item={item}
+                      id={item.node.id}
+                      title={item.node.key}
+                      parent={protocolId}
+                    />
+                  );
+                })}
 
-          <Dropdown overlay={menu}>
-            <a onClick={(e) => e.preventDefault()}>
-              Добавить Компонент <DownOutlined />
-            </a>
-          </Dropdown>
-          <div className={css.buttonField}>
-            <AddImage />
-            <AddScreen parent={protocolId} />
-          </div>
+              <Dropdown overlay={menu}>
+                <a onClick={(e) => e.preventDefault()}>
+                  Добавить Компонент <DownOutlined />
+                </a>
+              </Dropdown>
+              <div className={css.buttonField}>
+                <AddImage />
+                <AddScreen parent={protocolId} />
+              </div>
+            </TabPane>
+            <TabPane tab="Качество" key="3"></TabPane>
+          </Tabs>
         </div>
       )}
     </div>
