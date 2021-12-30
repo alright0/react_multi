@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import { updateProtocol, addProtocols } from "../../api/queries/protocolQueries";
 import { Modal, Form } from "antd";
-import { ProtocolListFormDialog } from "./FormDialog";
+import { ProtocolListFormDialog } from "./ProtocolFormDialog";
 
 let UpdateProtocolModal = (props) => {
   const [form] = Form.useForm();

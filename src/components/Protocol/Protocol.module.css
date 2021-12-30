@@ -13,3 +13,19 @@
     display: block;
   }
 }
+
+.imgResize {
+  overflow: hidden;
+  width: 200px;
+  height: 200px;
+}
+
+.screenContainer {
+  width: 80%;
+  margin: auto;
+}
+
+.actionContainer {
+  display: flex;
+  justify-content: left;
+}

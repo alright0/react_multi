@@ -28,7 +28,10 @@ export const getProtocol = gql`
             id
             type
             title
+            description
+            image
             key
+            created
           }
         }
       }
@@ -124,6 +127,19 @@ export const updateScreen = gql`
         parent
         key
         created
+      }
+    }
+  }
+`;
+
+export const uplodateImage = gql`
+  mutation uploadImage($image: Upload!, $parent: String!, $description: String!, $key: Float!) {
+    uploadImage(image: $image, parent: $parent, description: $description, key: $key) {
+      screen {
+        id
+        type
+        description
+        image
       }
     }
   }

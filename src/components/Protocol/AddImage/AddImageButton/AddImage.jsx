@@ -2,8 +2,20 @@ import React, { useRef, useState } from "react";
 import s from "./AddImage.module.css";
 import add from "./../../../../assets/img/add.png";
 import ImageForm from "../ImageForm/ImageForm";
+import { useMutation } from "@apollo/client";
+import { getProtocol, uplodateImage } from "../../../../api/queries/protocolQueries";
 
-let AddImageButton = () => {
+let AddImageButton = (props) => {
+  const [uploadQuery] = useMutation(uplodateImage, {
+    onError(error) {
+      return <span>{error.message}</span>;
+    },
+    //onCompleted() {
+    //  props.closeModal();
+    //},
+    refetchQueries: [{ query: getProtocol, variables: { id: props.parent } }],
+  });
+
   let [isDrag, setIsDrag] = useState(false);
   const inputFileRef = useRef();
 
@@ -28,8 +40,12 @@ let AddImageButton = () => {
     inputFileRef.current.click();
   };
 
-  let onFileSelected = (e) => {
-    let file = e.target.files[0];
+  let onFileSelected = (e, protocolId) => {
+    let key = Date.now();
+
+    let image = e.target.files[0];
+    console.log(image);
+    uploadQuery({ variables: { image, description: "123", parent: props.parent, key } });
   };
 
   return (

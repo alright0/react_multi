@@ -5,6 +5,8 @@ import Protocol from "./components/Protocol/Protocol";
 import Books from "./components/Books/Books";
 import ProtocolList from "./components/ProtocolList/ProtocolList";
 
+export const MEDIA_URL = "http://192.168.0.104:20000/media/";
+
 function App() {
   return (
     <div className="App">

@@ -4,20 +4,23 @@ import AddImage from "./AddImage/AddImageButton/AddImage";
 import AddScreen from "./AddScreen/AddScreen";
 import css from "./Protocol.module.css";
 import TextScreen from "./Screens/TextScreen";
-import { getProtocol, addScreen, addProtocol } from "../../api/queries/protocolQueries";
+import { getProtocol } from "../../api/queries/protocolQueries";
 import Preloader from "../common/Preloader/Preloader";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { Menu, Dropdown, Button } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { Tabs } from "antd";
+import { Menu, Dropdown, List, Image, Space } from "antd";
+import { DeleteOutlined, DownOutlined, EditOutlined } from "@ant-design/icons";
+import { PageHeader, Descriptions, Tag, Button } from "antd";
+import ImageScreen from "./Screens/ImageScreen";
+import { MEDIA_URL } from "../../App";
+import DeleteScreenModal from "./Screens/DeleteScreen";
 
 let Protocol = (props) => {
-  const { TabPane } = Tabs;
+  const MOCK_IMG = "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png";
 
-  const Screens = {
-    TextScreen: TextScreen,
-  };
+  const [isDeleteScreenOpen, setIsDeleteScreenOpen] = useState({ isOpen: false });
+  const [isAddNewScreenOpen, setIsAddNewScreeOpen] = userState({false})
+  const [isEditScreenOpen, setIsEditScreeOpen] = userState({false})
 
   const { protocolId } = useParams();
 
@@ -34,55 +37,108 @@ let Protocol = (props) => {
   );
 
   return (
-    <div>
+    <div className={css.screenContainer}>
       {error && <div>{error.message}</div>}
       {loading && <Preloader />}
       {!loading && !error && (
         <div>
-          <div className={css.protocolDescription}>
-            <div>
-              <b>Тип:</b> {protocolData.type}
-            </div>
-            <div>
-              <b>Название:</b> {protocolData.title}
-            </div>
-            <div>
-              <b>Создан:</b> {new Date(protocolData.created).toLocaleString()}
-            </div>
-          </div>
-          <Tabs type="card">
-            <TabPane tab="Планирование" key="1"></TabPane>
-            <TabPane tab="Производство" key="2">
-              {screens &&
-                screens.map((item) => {
-                  let ComponentType = Screens[item.node.type];
-                  return (
-                    <ComponentType
-                      key={item.node.key}
-                      item={item}
-                      id={item.node.id}
-                      title={item.node.key}
-                      parent={protocolId}
-                    />
-                  );
-                })}
+          <PageHeader title="TEST 124DW13" tags={<Tag color="blue">Running</Tag>}>
+            <Descriptions size="small" column={window.innerWidth > 700 ? 3 : 1}>
+              <Descriptions.Item label="Тип">{protocolData.type}</Descriptions.Item>
+              <Descriptions.Item label="Название">{protocolData.title}</Descriptions.Item>
+              <Descriptions.Item label="Создан">{new Date(protocolData.created).toLocaleString()}</Descriptions.Item>
+              <Descriptions.Item label="Статус">Запланирован</Descriptions.Item>
+              <Descriptions.Item label="Инициатор">Иван Иванов</Descriptions.Item>
+              <Descriptions.Item label="Цель">Целевая цель</Descriptions.Item>
+              <Descriptions.Item label="Тестовая информация">Тестирование</Descriptions.Item>
+            </Descriptions>
+          </PageHeader>
+          {screens && (
+            <List
+              header="Информация по тестам"
+              itemLayout="vertical"
+              size="large"
+              dataSource={screens}
+              footer={
+                <Dropdown overlay={menu}>
+                  <a onClick={(e) => e.preventDefault()}>
+                    Добавить Компонент <DownOutlined />
+                  </a>
+                </Dropdown>
+              }
+              renderItem={(item) => (
+                <List.Item
+                  key={item.node.key}
+                  item={item}
+                  //id={item.node.id}
+                  //parent={protocolId}
+                  actions={[
+                    <Space>
+                      <Button
+                        icon={<EditOutlined />}
+                        //onClick={() => }
+                      >
+                        Изменить
+                      </Button>
 
-              <Dropdown overlay={menu}>
-                <a onClick={(e) => e.preventDefault()}>
-                  Добавить Компонент <DownOutlined />
-                </a>
-              </Dropdown>
-              <div className={css.buttonField}>
-                <AddImage />
-                <AddScreen parent={protocolId} />
-              </div>
-            </TabPane>
-            <TabPane tab="Качество" key="3"></TabPane>
-          </Tabs>
+                      <Button
+                        icon={<DeleteOutlined />}
+                        danger
+                        onClick={() => setIsDeleteScreenOpen({ isOpen: true, id: item.node.id })}
+                      >
+                        Удалить
+                      </Button>
+                    </Space>,
+                  ]}
+                  extra={
+                    item.node.image && (
+                      <div className={css.imgResize}>
+                        <Image src={`${MEDIA_URL}${item.node.image}`} />
+                      </div>
+                    )
+                  }
+                >
+                  <List.Item.Meta
+                    title={item.node.title}
+                    description={
+                      <div>
+                        {new Date(item.node.created).toLocaleString()}
+                        {"   "}
+                        <Tag color="green">Производство</Tag>
+                      </div>
+                    }
+                  />
+                  {item.node.description}
+                </List.Item>
+              )}
+            />
+          )}
+          <DeleteScreenModal
+            isOpen={isDeleteScreenOpen.isOpen}
+            id={isDeleteScreenOpen.id}
+            closeModal={() => setIsDeleteScreenOpen(false)
+            }
+          />
+
+            <AddNewScreenModal
+            isOpen={isAddNewScreenOpen}
+            closeModal={() => setIsAddNewScreeOpen(false)}
+            />
+
+            <EditScreenModal
+            isOpen={isEditScreenOpen}
+            closeModal={() => setIsEditScreeOpen(false)}
+            />
+
+
+
+          <div className={css.buttonField}>
+            <AddImage parent={protocolId} />
+            <AddScreen parent={protocolId} />
+          </div>
         </div>
       )}
     </div>
   );
 };
-
 export default Protocol;
